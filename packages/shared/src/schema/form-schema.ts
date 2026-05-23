@@ -1,4 +1,4 @@
-import type { FormSchema, Screen } from './screen-types';
+import type { FormSchema, Screen } from './screen-types.js';
 
 const age: Screen = {
   id: 'age',

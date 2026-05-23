@@ -1,13 +1,13 @@
-import type { Answers } from '../schema/types';
+import type { Answers } from '../schema/types.js';
 import type {
   BranchCondition,
   BranchRule,
   Screen,
   ScreenId,
   TerminalState,
-} from '../schema/screen-types';
-import { formSchema } from '../schema/form-schema';
-import { computeBmi } from './bmi';
+} from '../schema/screen-types.js';
+import { formSchema } from '../schema/form-schema.js';
+import { computeBmi } from './bmi.js';
 
 export type EngineResult = { type: 'next-screen'; screenId: ScreenId } | TerminalState;
 

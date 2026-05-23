@@ -1,0 +1,41 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum SessionStatus {
+  IN_PROGRESS
+  ELIGIBLE
+  INELIGIBLE
+  CLINICAL_REVIEW
+}
+
+model Session {
+  id              String        @id @default(uuid())
+  status          SessionStatus @default(IN_PROGRESS)
+  currentScreenId String?
+  result          Json?
+  answers         Answer[]
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@map("sessions")
+}
+
+model Answer {
+  id        String   @id @default(uuid())
+  sessionId String
+  screenId  String
+  value     Json
+  session   Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([sessionId, screenId])
+  @@index([sessionId])
+  @@map("answers")
+}

@@ -1,4 +1,4 @@
-import type { IneligibilityReason, ReviewReason } from '../schema/screen-types';
+import type { IneligibilityReason, ReviewReason } from '../schema/screen-types.js';
 
 export type EligibilityResult =
   | { status: 'eligible' }

@@ -1,6 +1,6 @@
-import type { Answers } from '../schema/types';
-import { computeBmi } from '../engine/bmi';
-import type { EligibilityResult, IneligibilityReason, ReviewReason } from './types';
+import type { Answers } from '../schema/types.js';
+import { computeBmi } from '../engine/bmi.js';
+import type { EligibilityResult, IneligibilityReason, ReviewReason } from './types.js';
 
 /**
  * Pure function: evaluates all answers against eligibility rules.

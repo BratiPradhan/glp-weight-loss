@@ -1,4 +1,4 @@
-import type { ScreenId, InputType } from './types';
+import type { ScreenId, InputType } from './types.js';
 
 // Branch rules: each rule is a predicate over the answers map.
 // We model the rule as data (operator + operands) rather than a function

@@ -1,2 +1,2 @@
-export * from './get-next-screen';
-export * from './bmi';
+export * from './get-next-screen.js';
+export * from './bmi.js';

@@ -1,2 +1,2 @@
-export * from './answer-schemas';
-export * from './api-schemas';
+export * from './answer-schemas.js';
+export * from './api-schemas.js';
