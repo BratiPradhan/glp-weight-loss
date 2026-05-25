@@ -30,7 +30,7 @@ export function RadioInput({ screen, value, onChange, error }: Props) {
               <RadioGroupItem
                 value={option}
                 id={id}
-                data-testid={`option-${screen.id}-${option}`}
+                data-testid={`option-${screen.id}-${option.replace(/\s+/g, '-')}`}
               />
               <Label htmlFor={id} className="font-normal cursor-pointer">
                 {option}

@@ -39,7 +39,7 @@ export function CheckboxInput({ screen, value, onChange, error }: Props) {
                 id={id}
                 checked={checked}
                 onCheckedChange={() => toggle(option)}
-                data-testid={`option-${screen.id}-${option}`}
+                data-testid={`option-${screen.id}-${option.replace(/\s+/g, '-')}`}
               />
               <Label htmlFor={id} className="font-normal cursor-pointer">
                 {option}
