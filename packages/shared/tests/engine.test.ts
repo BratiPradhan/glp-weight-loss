@@ -49,6 +49,4 @@ describe('getNextScreen', () => {
     // @ts-expect-error testing runtime guard
     expect(() => getNextScreen('nonexistent', {})).toThrow();
   });
-
-  // ... a test per branching screen
 });

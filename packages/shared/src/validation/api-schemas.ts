@@ -1,8 +1,37 @@
 import { z } from 'zod';
 
-// Discriminated union: any answer's shape depends on its screen.
-// We don't type-narrow here; the controller does that after looking up the screen.
 export const answerValueSchema = z.union([z.number(), z.string(), z.array(z.string())]);
+
+const ineligibilityReasonSchema = z.enum([
+  'underage',
+  'bmi-too-low',
+  'pregnancy',
+  'uncontrolled-diabetes',
+  'already-on-glp1',
+]);
+
+const reviewReasonSchema = z.enum([
+  'age-over-75',
+  'high-bmi',
+  'stage-2-and-diabetes',
+  'hypertensive-crisis',
+  'multiple-comorbidities',
+  'stage-1-sedentary-high-sugar',
+  'daily-alcohol-plus-risk',
+  'already-on-therapy',
+]);
+
+export const eligibilityResultSchema = z.discriminatedUnion('status', [
+  z.object({ status: z.literal('eligible') }),
+  z.object({
+    status: z.literal('ineligible'),
+    reason: ineligibilityReasonSchema,
+  }),
+  z.object({
+    status: z.literal('clinical-review'),
+    reasons: z.array(reviewReasonSchema),
+  }),
+]);
 
 export const startSessionResponseSchema = z.object({
   sessionId: z.string().uuid(),
@@ -23,11 +52,7 @@ export const submitAnswerResponseSchema = z.discriminatedUnion('type', [
   }),
   z.object({
     type: z.literal('terminal'),
-    result: z.object({
-      status: z.enum(['eligible', 'ineligible', 'clinical-review']),
-      reasons: z.array(z.string()).optional(),
-      reason: z.string().optional(),
-    }),
+    result: eligibilityResultSchema,
   }),
 ]);
 
@@ -36,17 +61,11 @@ export const getSessionResponseSchema = z.object({
   status: z.enum(['in-progress', 'completed']),
   currentScreenId: z.string().nullable(),
   answers: z.record(z.string(), answerValueSchema),
-  result: z
-    .object({
-      status: z.enum(['eligible', 'ineligible', 'clinical-review']),
-      reasons: z.array(z.string()).optional(),
-      reason: z.string().optional(),
-    })
-    .nullable(),
+  result: eligibilityResultSchema.nullable(),
 });
 
-// Inferred types — exported for both frontend and backend.
 export type StartSessionResponse = z.infer<typeof startSessionResponseSchema>;
 export type SubmitAnswerRequest = z.infer<typeof submitAnswerRequestSchema>;
 export type SubmitAnswerResponse = z.infer<typeof submitAnswerResponseSchema>;
 export type GetSessionResponse = z.infer<typeof getSessionResponseSchema>;
+export type EligibilityResultDto = z.infer<typeof eligibilityResultSchema>;

@@ -1,15 +1,25 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { useSession } from '@/hooks/useSession';
 import { useSessionStore } from '@/store/session-store';
 import { Button } from '@/components/ui/button';
 import { StoreHydrator } from '@/components/StoreHydrator';
 
 function ResultContent() {
   const router = useRouter();
-  const { result, reset } = useSessionStore();
+  const result = useSessionStore((s) => s.result);
+  const sessionId = useSessionStore((s) => s.sessionId);
+  const reset = useSessionStore((s) => s.reset);
 
-  if (!result) {
+  useSession();
+
+  const startOver = () => {
+    reset();
+    router.push('/');
+  };
+
+  if (!sessionId) {
     return (
       <main className="p-6 max-w-2xl mx-auto">
         <p>No result available.</p>
@@ -18,10 +28,14 @@ function ResultContent() {
     );
   }
 
-  const startOver = () => {
-    reset();
-    router.push('/');
-  };
+  // Still loading the result from the server
+  if (!result) {
+    return (
+      <p data-testid="loading" role="status" aria-live="polite">
+        Loading result…
+      </p>
+    );
+  }
 
   return (
     <main className="min-h-screen p-6 max-w-2xl mx-auto space-y-6">

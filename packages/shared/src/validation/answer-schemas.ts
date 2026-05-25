@@ -1,7 +1,5 @@
 import { z } from 'zod';
 
-// One schema per screen that takes user input.
-// Computed screens (bmi, result) have no answer schema — they're not user-entered.
 export const answerSchemas = {
   age: z.coerce.number().int().min(0).max(120),
 
@@ -14,13 +12,10 @@ export const answerSchemas = {
   comorbidities: z.array(
     z.enum(['Hypertension', 'Dyslipidemia', 'Sleep Apnea', 'GERD', 'Thyroid Disorder']),
   ),
-  // Note: min(1) NOT enforced — "no comorbidities" is a valid answer.
-  // The checkbox UI must allow submission with zero selections.
 
   diabetes: z.enum(['Yes', 'No']),
 
   hba1c: z.coerce.number().min(2).max(20),
-  // HbA1c physiologically ranges roughly 4–15%. Bounds 2–20 are a sanity check.
 
   bloodPressure: z
     .array(
@@ -33,7 +28,6 @@ export const answerSchemas = {
       ]),
     )
     .min(1),
-  // BP requires at least one selection — there's no "no BP" answer.
 
   medications: z.array(
     z.enum([
@@ -44,7 +38,6 @@ export const answerSchemas = {
       'GLP-1 receptor agonist',
     ]),
   ),
-  // Empty array allowed: user takes no medications.
 
   smoking: z.enum(['Yes', 'No']),
 

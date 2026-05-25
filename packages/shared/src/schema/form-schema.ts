@@ -11,7 +11,6 @@ const age: Screen = {
   next: {
     default: 'weight',
     rules: [
-      // Order matters: first match wins.
       // age < 18 → terminal ineligible
       {
         when: [{ field: 'age', op: 'lt', value: 18 }],
