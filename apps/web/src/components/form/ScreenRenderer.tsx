@@ -1,7 +1,7 @@
 // apps/web/src/components/form/ScreenRenderer.tsx
 'use client';
 
-import { useForm } from 'react-hook-form';
+import { useForm, type Resolver } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { formSchema, getAnswerSchema, type Screen } from '@glp1/shared';
@@ -56,7 +56,7 @@ function ScreenForm({
     watch,
     formState: { errors },
   } = useForm<FormValues>({
-    resolver: zodResolver(wrappedSchema),
+    resolver: zodResolver(wrappedSchema) as unknown as Resolver<FormValues>,
     defaultValues: { value: defaultForScreen(screen) },
   });
 
