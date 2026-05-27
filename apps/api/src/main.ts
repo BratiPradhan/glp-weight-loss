@@ -1,15 +1,20 @@
 import { config } from 'dotenv';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { existsSync } from 'node:fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Load .env from repo root BEFORE any other imports run
-// (Nest's module graph instantiates PrismaClient which reads process.env)
-const envPath = path.resolve(__dirname, '../../../../.env');
-console.log('Loading .env from:', envPath);
-config({ path: envPath });
+// Only load .env in non-production (local dev). On Railway/Vercel,
+// env vars are injected directly into process.env.
+if (process.env.NODE_ENV !== 'production') {
+  const envPath = path.resolve(__dirname, '../../../../.env');
+  console.log('Loading .env from:', envPath);
+  if (existsSync(envPath)) {
+    config({ path: envPath });
+  }
+}
 
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module.js';
